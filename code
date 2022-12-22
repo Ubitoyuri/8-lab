@@ -1,0 +1,93 @@
+//8
+#include <queue>
+#include <iostream>
+#include <locale>
+using namespace std;
+
+void BFS(int *(*mass),bool *be, int pos,int n)
+{
+    queue <int> q;
+    q.push(pos);
+	be[pos] = true;
+	while(!q.empty())
+	{
+		pos=q.front();
+		q.pop();
+		printf("%d ",pos+1);
+		for(int i=0;i < n;i++)
+		{
+			if(mass[pos][i]==1 && be[i]==false)
+			{
+
+				q.push(i);
+				be[i] = true;
+			}
+		}
+	}
+}
+
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+	int** a, n, k = 0;
+	int i = 0, j = 0,w,t=0;
+	printf("Введите кол-во строк и столбцов\n");
+	scanf_s("%d", &n);
+	a = (int**)malloc(n * sizeof(int*));
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = (int*)malloc(n * sizeof(int));
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i; j < n; j++)
+		{
+			w = rand() % 2;
+			if (w == 1)
+			{
+				a[i][j] = 1;// rand() % 10;
+				a[j][i] = a[i][j];
+			}
+			else {
+				a[i][j] = 0;
+				a[j][i] = a[i][j];
+			}
+			if (i == j)
+			{
+				a[i][j] = 0;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			printf(" %d", a[i][j]);
+			if (a[i][j] != 0)
+			{
+				t++;
+			}
+			k++;
+		}
+		printf("\n");
+	}
+	printf("%d\n", k);
+
+	int pos=0;
+	bool* be = (bool*)malloc(n * sizeof(bool));
+	for(int i = 0; i < n;i++)
+	{
+		be[i] = false;
+	}
+	for (i = 0; i < n; i++) 
+	{
+		if(be[i] == false)
+		{
+			BFS(a,be,i,n);
+		}
+	}
+	free(a);
+	getchar();
+	getchar();
+}
